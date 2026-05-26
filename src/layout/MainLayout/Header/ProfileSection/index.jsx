@@ -73,20 +73,18 @@ export default function ProfileSection() {
   return (
     <>
       <Chip
-        slotProps={{ label: { sx: { lineHeight: 0 } } }}
-        sx={{ ml: 2, height: '48px', alignItems: 'center', borderRadius: '27px' }}
+        slotProps={{ label: { sx: { display: 'none' } } }}
+        sx={{ ml: 2, height: '48px', alignItems: 'center', borderRadius: '27px', '& .MuiChip-icon': { ml: 0.5, mr: 0.5 } }}
         icon={
           <Avatar
-            src={User1}
-            alt="user-images"
-            sx={{ typography: 'mediumAvatar', margin: '8px 0 8px 8px !important', cursor: 'pointer' }}
+
             ref={anchorRef}
             aria-controls={open ? 'menu-list-grow' : undefined}
             aria-haspopup="true"
             color="inherit"
           />
         }
-        label={<IconSettings stroke={1.5} size="24px" />}
+        label=""
         ref={anchorRef}
         aria-controls={open ? 'menu-list-grow' : undefined}
         aria-haspopup="true"
@@ -117,12 +115,6 @@ export default function ProfileSection() {
                 {open && (
                   <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
                     <Box sx={{ p: 2, pb: 0 }}>
-                      <Stack>
-                        <Stack direction="row" sx={{ alignItems: 'center', gap: 0.5 }}>
-                          <Typography variant="h4">Account</Typography>
-                        </Stack>
-                        <Typography variant="subtitle2">Member</Typography>
-                      </Stack>
                       <Divider sx={{ mt: 2 }} />
                     </Box>
                     <Box
@@ -139,18 +131,12 @@ export default function ProfileSection() {
                         component="nav"
                         sx={{
                           width: '100%',
-                          maxWidth: 350,
+                          maxWidth: 400,
                           minWidth: 300,
                           borderRadius: `${borderRadius}px`,
                           '& .MuiListItemButton-root': { mt: 0.5 }
                         }}
                       >
-                        <ListItemButton sx={{ borderRadius: `${borderRadius}px` }}>
-                          <ListItemIcon>
-                            <IconSettings stroke={1.5} size="20px" />
-                          </ListItemIcon>
-                          <ListItemText primary={<Typography variant="body2">Account Settings</Typography>} />
-                        </ListItemButton>
                         <ListItemButton sx={{ borderRadius: `${borderRadius}px` }} onClick={handleLogout}>
                           <ListItemIcon>
                             <IconLogout stroke={1.5} size="20px" />

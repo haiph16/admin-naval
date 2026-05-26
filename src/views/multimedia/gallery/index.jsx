@@ -17,154 +17,13 @@ import {
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const FILE_META = {
-  image: { bg: '#E6F1FB', color: '#378ADD', label: 'Image', chip: 'primary' },
-  video: { bg: '#FCEBEB', color: '#E24B4A', label: 'Video', chip: 'error' },
-  audio: { bg: '#FAEEDA', color: '#BA7517', label: 'Audio', chip: 'warning' },
-  pdf: { bg: '#FCEBEB', color: '#E24B4A', label: 'PDF', chip: 'error' },
-  text: { bg: '#EAF3DE', color: '#3B6D11', label: 'Text', chip: 'success' },
-  other: { bg: '#F1EFE8', color: '#888780', label: 'File', chip: 'default' },
-};
-
-const fileCat = (mime) => {
-  if (!mime) return 'other';
-  if (mime.startsWith('image/')) return 'image';
-  if (mime.startsWith('video/')) return 'video';
-  if (mime.startsWith('audio/')) return 'audio';
-  if (mime.includes('pdf')) return 'pdf';
-  if (mime.includes('text')) return 'text';
-  return 'other';
-};
-
-// ─── Styled ───────────────────────────────────────────────────────────────────
-
-const Shell = styled(Box)(({ theme }) => ({
-  display: 'flex', flexDirection: 'column', height: '85vh',
-  overflow: 'hidden', borderRadius: 16, background: theme.palette.background.paper,
-}));
-
-const Topbar = styled(Box)(({ theme }) => ({
-  display: 'flex', alignItems: 'center', gap: 8, padding: '8px 14px',
-  borderBottom: `1px solid ${theme.palette.divider}`,
-  background: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[50],
-  flexShrink: 0,
-}));
-
-const NBtn = styled(IconButton)(({ theme }) => ({
-  width: 30, height: 30, borderRadius: 8, color: theme.palette.text.secondary,
-  '&:hover': { background: theme.palette.background.paper },
-}));
-
-const AddrBar = styled(Box)(({ theme }) => ({
-  flex: 1, display: 'flex', alignItems: 'center',
-  background: theme.palette.background.paper,
-  border: `1px solid ${theme.palette.divider}`,
-  borderRadius: 10, padding: '0 10px', height: 32, overflow: 'hidden',
-}));
-
-const SBar = styled(TextField)(({ theme }) => ({
-  width: 190,
-  '& .MuiOutlinedInput-root': {
-    height: 32, borderRadius: 10, fontSize: 12,
-    background: theme.palette.background.paper,
-    '& fieldset': { borderColor: theme.palette.divider },
-    '&.Mui-focused fieldset': { borderColor: theme.palette.primary.main, borderWidth: 1 },
-  },
-  '& .MuiInputBase-input': { padding: '0 8px', fontSize: 12 },
-}));
-
-const SubBar = styled(Box)(({ theme }) => ({
-  display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px',
-  borderBottom: `1px solid ${theme.palette.divider}`, flexShrink: 0,
-}));
-
-const SBtn = styled(Button)(({ theme }) => ({
-  height: 28, borderRadius: 8, fontSize: 12, textTransform: 'none',
-  padding: '0 11px', gap: 5, border: `1px solid ${theme.palette.divider}`,
-  color: theme.palette.text.primary, background: theme.palette.background.paper,
-  '&:hover': { background: alpha(theme.palette.primary.main, 0.06) },
-  minWidth: 0,
-}));
-
-const AccentBtn = styled(SBtn)(({ theme }) => ({
-  background: alpha(theme.palette.primary.main, 0.1),
-  color: theme.palette.primary.main,
-  borderColor: alpha(theme.palette.primary.main, 0.3),
-  '&:hover': { background: alpha(theme.palette.primary.main, 0.18) },
-}));
-
-const VToggle = styled(Box)(({ theme }) => ({
-  display: 'flex', border: `1px solid ${theme.palette.divider}`,
-  borderRadius: 8, overflow: 'hidden', marginLeft: 'auto',
-}));
-
-const VBtn = styled(IconButton)(({ theme, isactive }) => ({
-  width: 28, height: 28, borderRadius: 0,
-  color: isactive === 'true' ? theme.palette.primary.main : theme.palette.text.secondary,
-  background: isactive === 'true' ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
-  '&:hover': { background: isactive === 'true' ? alpha(theme.palette.primary.main, 0.16) : theme.palette.action.hover },
-}));
-
-const Sidebar = styled(Box)(({ theme }) => ({
-  width: 196, flexShrink: 0, borderRight: `1px solid ${theme.palette.divider}`,
-  background: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[50],
-  overflowY: 'auto', padding: '10px 8px',
-}));
-
-const SbLabel = styled(Typography)({
-  fontSize: 10, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase',
-  padding: '10px 8px 4px', color: 'inherit', opacity: 0.45,
-});
-
-const SbItem = styled(Box)(({ theme, isactive }) => ({
-  display: 'flex', alignItems: 'center', gap: 8, padding: '5px 8px',
-  borderRadius: 8, cursor: 'pointer', fontSize: 12, marginBottom: 1,
-  color: isactive === 'true' ? theme.palette.primary.main : theme.palette.text.secondary,
-  background: isactive === 'true' ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
-  fontWeight: isactive === 'true' ? 600 : 400,
-  '&:hover': { background: theme.palette.action.hover, color: isactive === 'true' ? theme.palette.primary.main : theme.palette.text.primary },
-  whiteSpace: 'nowrap', overflow: 'hidden',
-}));
-
-const ItemWrap = styled(Box)(({ theme, isactive }) => ({
-  position: 'relative', borderRadius: 10, cursor: 'pointer',
-  border: `1px solid ${isactive === 'true' ? theme.palette.primary.main : 'transparent'}`,
-  background: isactive === 'true' ? alpha(theme.palette.primary.main, 0.07) : 'transparent',
-  transition: 'background .1s, border-color .1s',
-  '&:hover': {
-    background: isactive === 'true' ? alpha(theme.palette.primary.main, 0.11) : theme.palette.action.hover,
-    borderColor: isactive === 'true' ? theme.palette.primary.main : theme.palette.divider,
-    '& .item-actions': { opacity: 1 },
-  },
-}));
-
-const ActionBar = styled(Box)(({ theme }) => ({
-  position: 'absolute', top: 5, right: 5, opacity: 0, transition: 'opacity .15s',
-  display: 'flex', gap: 2, background: theme.palette.background.paper,
-  borderRadius: 7, border: `1px solid ${theme.palette.divider}`, padding: '2px 3px',
-  zIndex: 2,
-}));
-
-const ABtn = styled(IconButton)(({ theme, danger }) => ({
-  width: 22, height: 22, borderRadius: 5, padding: 0,
-  color: danger === 'true' ? theme.palette.error.main : theme.palette.text.secondary,
-  '&:hover': {
-    background: danger === 'true' ? alpha(theme.palette.error.main, 0.1) : theme.palette.action.hover,
-    color: danger === 'true' ? theme.palette.error.main : theme.palette.text.primary,
-  },
-}));
-
-const IconBg = styled(Box)(({ bg }) => ({
-  width: 52, height: 52, borderRadius: 10, background: bg,
-  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-}));
-
-const StatusBar = styled(Box)(({ theme }) => ({
-  display: 'flex', alignItems: 'center', gap: 10, padding: '5px 14px',
-  borderTop: `1px solid ${theme.palette.divider}`,
-  background: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[50],
-  flexShrink: 0, fontSize: 11, color: theme.palette.text.secondary,
-}));
+import { FILE_META, fileCat } from './constants';
+import {
+  Shell, Topbar, NBtn, AddrBar, SBar, SubBar, SBtn, AccentBtn, VToggle, VBtn,
+  SidebarContainer as Sidebar, SbLabel, SbItem, ItemWrap, ActionBar, ABtn, IconBg, StatusBar
+} from './styles';
+import GalleryDialogs from './GalleryDialogs';
+import MediaViewer from './MediaViewer';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -180,15 +39,7 @@ function FileIcon({ mime, isFolder, size = 26 }) {
   return <IconFile size={size} color={theme.palette.text.disabled} />;
 }
 
-function SimpleDialog({ open, onClose, title, icon, children, actions }) {
-  return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs" PaperProps={{ sx: { borderRadius: 3 } }}>
-      <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1, pb: 0.5 }}>{icon}{title}</DialogTitle>
-      <DialogContent>{children}</DialogContent>
-      <DialogActions sx={{ px: 3, pb: 2.5 }}>{actions}</DialogActions>
-    </Dialog>
-  );
-}
+
 
 // ─── Sidebar Tree ─────────────────────────────────────────────────────────────
 
@@ -248,6 +99,7 @@ export default function Gallery() {
   const [folderNames, setFolderNames] = useState({ vi: '', en: '' });
   const [renameVal, setRenameVal] = useState('');
   const [moveDestId, setMoveDestId] = useState('');
+  const [viewItem, setViewItem] = useState(null); // Used to display single media file preview
 
   // ── fetch ────────────────────────────────────────────────────────────────
   const fetchData = useCallback(async () => {
@@ -257,7 +109,7 @@ export default function Gallery() {
         api.get('/folders'),
         api.get('/media', { params: { page, limit, folder_id: cid === 0 ? null : cid, type: mediaFilter || undefined } })
       ]);
-      
+
       let rawFolders = fr.data?.data ?? fr.data ?? [];
       let listRoot = [];
       if (Array.isArray(rawFolders)) {
@@ -293,7 +145,7 @@ export default function Gallery() {
       // Build mediaMap: { folderId -> [media, ...] }
       const newMediaMap = { [cid]: [] };
       if (cid !== 0) newMediaMap[0] = [];
-      
+
       // 1. Process media returned inside folders (if any)
       list.forEach(f => {
         const fid = Number(f.id);
@@ -315,7 +167,7 @@ export default function Gallery() {
       // 2. Process paginated media response
       let rawMedia = mr.data?.data ?? mr.data ?? [];
       let standaloneMedia = [];
-      
+
       if (Array.isArray(rawMedia)) {
         standaloneMedia = rawMedia;
       } else if (rawMedia && typeof rawMedia === 'object' && Array.isArray(rawMedia.data)) {
@@ -341,7 +193,7 @@ export default function Gallery() {
         if (!newMediaMap[fid]) newMediaMap[fid] = [];
         // Prevent duplicates based on ID
         if (!newMediaMap[fid].find(x => x.id === parsedM.id)) {
-           newMediaMap[fid].push(parsedM);
+          newMediaMap[fid].push(parsedM);
         }
       });
 
@@ -482,23 +334,29 @@ export default function Gallery() {
     } catch (e) { console.error(e); }
   };
 
-  // Upload: dùng cid làm folder_id
+  const [uploadTask, setUploadTask] = useState(null); // { current, total }
+
   const handleUpload = async (e) => {
-    setLoading(true);
-    try {
-      for (const file of Array.from(e.target.files)) {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    setUploadTask({ current: 0, total: files.length });
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
         const form = new FormData();
         form.append('file', file);
-        if (cid !== 0) {
-          form.append('folder_id', cid);
-        }
+        if (cid !== 0) form.append('folder_id', cid);
         form.append('caption_vi', file.name.split('.')[0]);
         form.append('caption_en', file.name.split('.')[0]);
-        await api.post('/media', form);
-      }
-      fetchData();
-    } catch (err) { console.error(err); }
-    finally { setLoading(false); e.target.value = ''; }
+        try {
+            await api.post('/media', form);
+        } catch (err) { console.error(err); }
+        setUploadTask({ current: i + 1, total: files.length });
+    }
+    
+    fetchData();
+    setUploadTask(null);
+    e.target.value = '';
   };
 
   const getIconBg = item => item.isFolder ? '#FAEEDA' : FILE_META[fileCat(item.type)].bg;
@@ -565,14 +423,18 @@ export default function Gallery() {
           <AccentBtn onClick={() => openDlg('new', null)} startIcon={<IconFolderPlus size={14} />}>New folder</AccentBtn>
 
           {/* Upload */}
-          <SBtn
-            component="label"
-            startIcon={<IconUpload size={14} />}
-            title="Upload to current folder"
-          >
-            Upload
-            <input type="file" hidden multiple onChange={handleUpload} />
-          </SBtn>
+          {!uploadTask ? (
+            <SBtn
+              component="label"
+              startIcon={<IconUpload size={14} />}
+              title="Upload to current folder"
+            >
+              Upload
+              <input type="file" hidden multiple onChange={handleUpload} />
+            </SBtn>
+          ) : (
+            <Chip size="small" color="primary" label={`Uploading ${uploadTask.current}/${uploadTask.total}`} sx={{ height: 28, borderRadius: 2 }} />
+          )}
 
           <FormControl size="small" sx={{ minWidth: 100, ml: 'auto' }}>
             <Select
@@ -631,7 +493,7 @@ export default function Gallery() {
                   const cat = fileCat(item.type);
                   return (
                     <ItemWrap key={`${item.isFolder ? 'f' : 'm'}-${item.id}`} isactive="false"
-                      onDoubleClick={() => item.isFolder && go(item.id)}>
+                      onClick={() => item.isFolder ? go(item.id) : setViewItem(item)}>
                       <ItemActions item={item} />
                       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', p: '12px 8px 10px' }}>
                         <ItemThumb item={item} />
@@ -659,7 +521,7 @@ export default function Gallery() {
                   const cat = fileCat(item.type);
                   return (
                     <ItemWrap key={`${item.isFolder ? 'f' : 'm'}-${item.id}`} isactive="false"
-                      onDoubleClick={() => item.isFolder && go(item.id)}
+                      onClick={() => item.isFolder ? go(item.id) : setViewItem(item)}
                       sx={{ display: 'grid', gridTemplateColumns: '1fr 90px 90px 80px', alignItems: 'center', px: 1.5, py: 0.75, mb: 0.25, borderRadius: 1.5 }}>
                       <ItemActions item={item} />
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, overflow: 'hidden' }}>
@@ -683,70 +545,30 @@ export default function Gallery() {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
             <Typography variant="inherit">{listed.length} items</Typography>
             <Typography variant="inherit" sx={{ opacity: 0.45 }}>
-              {cid === 0 ? 'Double-click a folder to open it' : 'Hover an item to rename, move or delete'}
+              {cid === 0 ? 'Click a folder to open it' : 'Hover an item to rename, move or delete'}
             </Typography>
           </Box>
           {totalPages > 1 && (
-            <Pagination 
-               count={totalPages} 
-               page={page} 
-               onChange={(e, val) => setPage(val)} 
-               size="small" 
-               color="primary" 
-               shape="rounded"
+            <Pagination
+              count={totalPages}
+              page={page}
+              onChange={(e, val) => setPage(val)}
+              size="small"
+              color="primary"
+              shape="rounded"
             />
           )}
         </StatusBar>
       </Shell>
 
-      {/* ── Dialogs ── */}
-
-      {/* New folder */}
-      <SimpleDialog open={dlg === 'new'} onClose={closeDlg} title="New folder" icon={<IconFolderPlus size={20} color={theme.palette.primary.main} />}
-        actions={<>
-          <Button onClick={closeDlg} sx={{ borderRadius: 2 }}>Cancel</Button>
-          <Button variant="contained" onClick={doCreate} disabled={!folderNames.vi || !folderNames.en} startIcon={<IconCheck size={14} />} sx={{ borderRadius: 2 }}>Create</Button>
-        </>}>
-        <Stack spacing={2} sx={{ mt: 1.5 }}>
-          <TextField fullWidth label="Vietnamese name" autoFocus value={folderNames.vi} onChange={e => setFolderNames(p => ({ ...p, vi: e.target.value }))} placeholder="e.g. Hình ảnh sản phẩm" />
-          <TextField fullWidth label="English name" value={folderNames.en} onChange={e => setFolderNames(p => ({ ...p, en: e.target.value }))} placeholder="e.g. Product Images" />
-        </Stack>
-      </SimpleDialog>
-
-      {/* Rename */}
-      <SimpleDialog open={dlg === 'rename'} onClose={closeDlg} title={`Rename ${target?.isFolder ? 'folder' : 'file'}`} icon={<IconEdit size={20} />}
-        actions={<>
-          <Button onClick={closeDlg} sx={{ borderRadius: 2 }}>Cancel</Button>
-          <Button variant="contained" onClick={doRename} disabled={!renameVal} startIcon={<IconCheck size={14} />} sx={{ borderRadius: 2 }}>Rename</Button>
-        </>}>
-        <TextField fullWidth label="New name" autoFocus sx={{ mt: 1.5 }} value={renameVal} onChange={e => setRenameVal(e.target.value)} onKeyDown={e => e.key === 'Enter' && doRename()} />
-      </SimpleDialog>
-
-      {/* Delete */}
-      <SimpleDialog open={dlg === 'delete'} onClose={closeDlg} title={`Delete "${target?.name}"`} icon={<IconAlertTriangle size={20} color={theme.palette.error.main} />}
-        actions={<>
-          <Button onClick={closeDlg} sx={{ borderRadius: 2 }}>Cancel</Button>
-          <Button variant="contained" color="error" onClick={doDelete} startIcon={<IconTrash size={14} />} sx={{ borderRadius: 2 }}>Delete</Button>
-        </>}>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>This cannot be undone.</Typography>
-      </SimpleDialog>
-
-      {/* Move */}
-      <SimpleDialog open={dlg === 'move'} onClose={closeDlg} title={`Move "${target?.name}"`} icon={<IconFolderShare size={20} color={theme.palette.primary.main} />}
-        actions={<>
-          <Button onClick={closeDlg} sx={{ borderRadius: 2 }}>Cancel</Button>
-          <Button variant="contained" onClick={doMove} disabled={moveDestId === ''} startIcon={<IconCheck size={14} />} sx={{ borderRadius: 2 }}>Move</Button>
-        </>}>
-        <FormControl fullWidth sx={{ mt: 1.5 }}>
-          <InputLabel>Destination folder</InputLabel>
-          <Select label="Destination folder" value={moveDestId} onChange={e => setMoveDestId(e.target.value)}>
-            <MenuItem value={0}>— Home (root) —</MenuItem>
-            {folders.filter(f => f.id !== target?.id).map(f => (
-              <MenuItem key={f.id} value={f.id}>{f.name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </SimpleDialog>
+      <GalleryDialogs 
+         dlg={dlg} closeDlg={closeDlg} target={target}
+         folderNames={folderNames} setFolderNames={setFolderNames} doCreate={doCreate}
+         renameVal={renameVal} setRenameVal={setRenameVal} doRename={doRename}
+         doDelete={doDelete}
+         moveDestId={moveDestId} setMoveDestId={setMoveDestId} doMove={doMove} folders={folders}
+      />
+      <MediaViewer item={viewItem} onClose={() => setViewItem(null)} />
     </MainCard>
   );
 }

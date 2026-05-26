@@ -126,7 +126,7 @@ const UserList = () => {
             </Box>
           ) : (
             <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid', borderColor: theme.palette.divider }}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <Table sx={{ width: "900px" }} aria-label="simple table">
                 <TableHead sx={{ bgcolor: theme.palette.action.hover }}>
                   <TableRow>
                     <TableCell>Name</TableCell>

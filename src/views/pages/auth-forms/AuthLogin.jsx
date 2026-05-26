@@ -47,7 +47,7 @@ export default function AuthLogin() {
     event.preventDefault();
     setLoading(true);
     setError('');
-    
+
     try {
       const api = getApiClient();
       const response = await api.post('/auth/login', {
@@ -56,7 +56,7 @@ export default function AuthLogin() {
       });
 
       const { access_token, refresh_token, user } = response.data.data;
-      
+
       storage.set(StorageKey.ACCESS_TOKEN, access_token);
       if (refresh_token) {
         storage.set(StorageKey.REFRESH_TOKEN, refresh_token);
@@ -126,11 +126,7 @@ export default function AuthLogin() {
             label="Keep me logged in"
           />
         </Grid>
-        <Grid>
-          <Typography variant="subtitle1" component={Link} to="#!" sx={{ textDecoration: 'none', color: 'secondary.main' }}>
-            Forgot Password?
-          </Typography>
-        </Grid>
+
       </Grid>
 
       <Box sx={{ mt: 2 }}>
