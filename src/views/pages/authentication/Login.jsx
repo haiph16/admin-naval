@@ -26,7 +26,7 @@ export default function Login() {
           <Box sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
             <AuthCardWrapper>
               <Stack sx={{ alignItems: 'center', justifyContent: 'center', gap: 2 }}>
-                <Box sx={{ mb: 3 }}>
+                <Box sx={{ mb: 0 }}>
                   <Link to="#" aria-label="logo">
                     <Logo />
                   </Link>

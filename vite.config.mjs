@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => {
     server: {
       // this ensures that the browser opens upon server start
       open: true,
+      // this sets a default port to 3000
       port: PORT,
       host: true
     },
@@ -26,20 +27,8 @@ export default defineConfig(({ mode }) => {
       global: 'window'
     },
     resolve: {
+      dedupe: ['react', 'react-dom'],
       alias: {
-        // { find: '', replacement: path.resolve(__dirname, 'src') },
-        // {
-        //   find: /^~(.+)/,
-        //   replacement: path.join(process.cwd(), 'node_modules/$1')
-        // },
-        // {
-        //   find: /^src(.+)/,
-        //   replacement: path.join(process.cwd(), 'src/$1')
-        // }
-        // {
-        //   find: 'assets',
-        //   replacement: path.join(process.cwd(), 'src/assets')
-        // },
         '@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs'
       }
     },
